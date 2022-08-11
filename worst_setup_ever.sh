@@ -3,7 +3,6 @@
 apps="zsh terminator git qbittorrent emacs vim picom herbstluftwm"
 
 sudo apt update
-sudo apt upgrade
 sudo apt install $apps 
 
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
