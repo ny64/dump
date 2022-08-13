@@ -2,7 +2,7 @@
 
 salt=$RANDOM
 
-apps="zsh terminator git qbittorrent emacs vim picom herbstluftwm rofi"
+apps="zsh terminator git qbittorrent emacs vim picom herbstluftwm rofi feh"
 
 sudo apt update
 sudo apt install $apps 
