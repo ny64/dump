@@ -200,4 +200,4 @@ for monitor in $(hc list_monitors | cut -d: -f1) ; do
     "$panel" "$monitor" &
 done
 
-# picom --config ~/.config/picom.conf & xterm -hold -e neofetch & sleep .1s  && transset -a&
+# picom --config ~/.config/picom.conf
