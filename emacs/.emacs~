@@ -1,0 +1,65 @@
+;; color theme
+(require 'color-theme-sanityinc-tomorrow)
+
+;; melpa package archive
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+(unless (package-installed-p 'use-package)
+(package-refresh-contents)
+(package-install 'use-package))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Theme
+(load-theme 'feng-shui t t)
+(enable-theme 'feng-shui)
+
+;; Font
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono-10"))
+(set-face-attribute 'default t :font "IBM Plex Mono-10")
+
+;; Disable Menu Bar
+(menu-bar-mode -1)
+
+;; evil mode
+(require 'evil)
+(evil-mode 1)
+
+(define-key evil-insert-state-map (kbd "C-;") 'evil-normal-state)
+
+;; common lisp (slime)
+(setq inferior-lisp-program "/usr/bin/sbcl")
+
+;; LaTeX (auctex)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+;; display line numbers (https://www.emacswiki.org/emacs/LineNumbers)
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
+
+;; disable bell sound (https://www.emacswiki.org/emacs/AlarmBell)
+(setq visible-bell 1)
+
+;; enables recent file feature
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; delimter highlighting
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+;; R markdown (https://plantarum.ca/2021/10/03/emacs-tutorial-rmarkdown/)
+(require 'poly-R)
+(add-to-list 'auto-mode-alist
+	     '("\\.[rR]md\\'" . poly-gfm+r-mode))
+(setq markdown-code-block-braces t)
+
