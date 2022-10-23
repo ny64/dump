@@ -168,7 +168,7 @@ hc set smart_frame_surroundings on
 hc set mouse_recenter_gap 0
 
 # set walpaper
-feh --bg-scale /home/peter/Pictures/Wallpapers/perflife.png
+feh --bg-scale /home/peter/Pictures/Wallpapers/wespen_hq.jpg
 
 # rules
 hc unrule -F
@@ -200,4 +200,6 @@ for monitor in $(hc list_monitors | cut -d: -f1) ; do
     "$panel" "$monitor" &
 done
 
-# picom --config ~/.config/picom.conf
+#mate-session&
+
+picom --config ~/.config/picom.conf && transset -a&
