@@ -27,7 +27,7 @@ hc keybind $Mod-Return spawn "${TERMINAL:-terminator}" # use your $TERMINAL with
 hc keybind $Mod-p spawn "firefox"
 hc keybind $Mod-Shift-p spawn "google-chrome"
 hc keybind $Mod-d spawn rofi -show drun
-hc keybind $Mod-e spawn caja --no-desktop /home/peter
+hc keybind $Mod-e spawn pcmanfm --no-desktop /home/peacock
 
 # extra keyboard buttons
 # Use pactl to adjust volume in PulseAudio.
@@ -137,7 +137,7 @@ hc attr theme.floating.reset 1
 hc set frame_border_active_color '#222222'
 hc set frame_border_normal_color '#101010'
 hc set frame_bg_normal_color '#565656'
-hc set frame_bg_active_color '#345F0C'
+hc set frame_bg_active_color '#215288'
 hc set frame_border_width 1
 hc set always_show_frame on
 hc set frame_bg_transparent on
@@ -148,7 +148,7 @@ hc attr theme.title_height 0
 hc attr theme.title_font 'IBM Plex Serif:pixelsize=12'  # example using Xft
 # hc attr theme.title_font '-*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*'
 hc attr theme.padding_top 0  # space below the title's baseline (i.e. text depth)
-hc attr theme.active.color '#9fbc00'
+hc attr theme.active.color '#42b3f5'
 hc attr theme.normal.color '#454545'
 hc attr theme.urgent.color orange
 hc attr theme.inner_width 1
@@ -157,8 +157,8 @@ hc attr theme.border_width 3
 hc attr theme.floating.border_width 4
 hc attr theme.floating.outer_width 1
 hc attr theme.floating.outer_color black
-hc attr theme.active.inner_color '#3E4A00'
-hc attr theme.active.outer_color '#3E4A00'
+hc attr theme.active.inner_color '#001E4A'
+hc attr theme.active.outer_color '#001E4A'
 hc attr theme.background_color '#141414' # default: #141414
 
 hc set window_gap 0
@@ -168,7 +168,7 @@ hc set smart_frame_surroundings on
 hc set mouse_recenter_gap 0
 
 # set walpaper
-feh --bg-scale /home/peter/Pictures/Wallpapers/wespen_hq.jpg
+#feh --bg-scale /home/peter/Pictures/Wallpapers/wespen_hq.jpg
 
 # rules
 hc unrule -F
@@ -203,3 +203,7 @@ done
 #mate-session&
 
 picom --config ~/.config/picom.conf && transset -a&
+
+# display settings
+xrandr --output DVI-D-1 --mode 1920x1080 --rate 60 --primary
+xrandr --output DP-1 --mode 1920x1080 --left-of DVI-D-1

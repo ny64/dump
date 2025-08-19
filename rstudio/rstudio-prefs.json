@@ -1,0 +1,7 @@
+{
+    "initial_working_directory": "~",
+    "pdf_previewer": "none",
+    "posix_terminal_shell": "zsh",
+    "editor_theme": "Dawn",
+    "editor_keybindings": "vim"
+}
