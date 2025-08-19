@@ -102,7 +102,7 @@ hc pad $monitor $panel_height
                     echo -n "^bg($selbg)^fg($selfg)"
                     ;;
                 '+')
-                    echo -n "^bg(#6881a6)^fg(#141414)"
+                    echo -n "^bg(#6881A6)^fg(#141414)"
                     ;;
                 ':')
                     echo -n "^bg()^fg(#ffffff)"
@@ -123,12 +123,13 @@ hc pad $monitor $panel_height
                 echo -n " ${i:1} "
             fi
         done
-        vol=$(amixer get Master | tail -n 1 | cut -d '[' -f 2 | sed 's/%.*//g' | sed -n 1p)
+        #vol=$(amixer -c 0 get Master | tail -n 1 | cut -d '[' -f 2 | sed 's/%.*//g' | sed -n 1p)
+        vol=$(pactl get-sink-volume @DEFAULT_SINK@ \
+           | awk '/Volume:/ { print $5; exit }' | tr -d '%')
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        #right="$vol% $separator^bg() $acpi $separator $date"
-        right="$vol% $separator^bg() $date"
+        right="$vol% $separator^bg() $acpi $separator $date"
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -158,25 +159,29 @@ hc pad $monitor $panel_height
                 date="${cmd[@]:1}"
                 ;;
             Battery*)
-                #echo "resetting acpi" >&2
                 acpi=""
-                battery_output="`echo ${cmd[@]} | grep -o -e \"[0-9]*%\"`"
-                charge_num=`echo ${battery_output: :-1} | bc`
-                case ${cmd[@]} in
-                    *"Charging"*)
-                        if [ ${charge_num} -gt 80 -a ${charge_num} -ne 100 ] ; then
-                            acpi+="^fg(#fc2f3d)"
-                        fi
-                        acpi+="[ + ] "
-                        ;;
-                    *"Discharging"*)
-                        if [ ${charge_num} -lt 30 ] ; then
-                            acpi+="^fg(#fc2f3d)"
-                        fi
-                        acpi+="[ - ] "
-                        ;;
-                esac
-                acpi+="${battery_output}"
+                battery_output="$(echo "${cmd[@]}" | grep -o -e '[0-9]*%')"
+                if [ -z "$battery_output" ]; then
+                    # no battery info -> show nothing (no delimiter either)
+                    acpi=""
+                else
+                    charge_num=$(echo "${battery_output%?}")  # remove trailing '%'
+                    case "${cmd[@]}" in
+                        *"Charging"*)
+                            if [ "$charge_num" -gt 80 ] && [ "$charge_num" -ne 100 ]; then
+                                acpi+="^fg(#fc2f3d)"
+                            fi
+                            acpi+="[ + ] "
+                            ;;
+                        *"Discharging"*)
+                            if [ "$charge_num" -lt 30 ]; then
+                                acpi+="^fg(#fc2f3d)"
+                            fi
+                            acpi+="[ - ] "
+                            ;;
+                    esac
+                    acpi+="$battery_output"
+                fi
                 ;;
             quit_panel)
                 exit
