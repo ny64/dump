@@ -129,7 +129,7 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$vol% $separator^bg() $acpi $date"
+        right="$vol% $separator^bg() $acpi$date"
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -179,7 +179,7 @@ hc pad $monitor $panel_height
                             acpi+="[ - ] "
                             ;;
                     esac
-                    acpi+="$battery_output $separator"
+                    acpi+="$battery_output $separator "
                 fi
                 ;;
             quit_panel)
