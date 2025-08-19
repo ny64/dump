@@ -129,7 +129,7 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$vol% $separator^bg() $acpi $separator $date"
+        right="$vol% $separator^bg() $acpi$date"
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -162,7 +162,6 @@ hc pad $monitor $panel_height
                 acpi=""
                 battery_output="$(echo "${cmd[@]}" | grep -o -e '[0-9]*%')"
                 if [ -z "$battery_output" ]; then
-                    # no battery info -> show nothing (no delimiter either)
                     acpi=""
                 else
                     charge_num=$(echo "${battery_output%?}")  # remove trailing '%'
@@ -180,7 +179,7 @@ hc pad $monitor $panel_height
                             acpi+="[ - ] "
                             ;;
                     esac
-                    acpi+="$battery_output"
+                    acpi+="$battery_output $seperator"
                 fi
                 ;;
             quit_panel)
