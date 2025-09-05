@@ -1,66 +1,62 @@
-;; color theme
-(require 'color-theme-sanityinc-tomorrow)
-
-;; melpa package archive
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
-(unless (package-installed-p 'use-package)
-(package-refresh-contents)
-(package-install 'use-package))
+;; Theme
+(load-theme 'modus-vivendi t)
+;; Font
+(set-face-attribute 'default nil
+		    :font "IBM Plex Mono"
+		    :height 100)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
-
-;; Theme
-(load-theme 'feng-shui t t)
-(enable-theme 'feng-shui)
-
-;; Font
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono-10"))
-(set-face-attribute 'default t :font "IBM Plex Mono-10")
-
-;; Disable Menu Bar and Toolbar
+ '(font-lock-comment-face ((t (:slant italic)))))
+;; Titlebar
+(when (window-system)
+  (set-frame-parameter nil 'undecorated t))
+;; Disable menu bar
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-;; evil mode
-(require 'evil)
-(evil-mode 1)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
 
-(define-key evil-insert-state-map (kbd "C-;") 'evil-normal-state)
+;; Bootstrap use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; common lisp (slime)
-(setq inferior-lisp-program "/usr/bin/sbcl")
+;; Evil mode setup
+(setq evil-want-keybinding nil)
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1))
 
-;; LaTeX (auctex)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+;; Vim-like key bindings in various modes
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init))
 
-;; display line numbers (https://www.emacswiki.org/emacs/LineNumbers)
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
+(use-package csv-mode
+  :ensure t
+  :mode "\\.csv\\'"
+  :config
+  ;; Enable evil keybindings in csv-mode
+  (evil-define-key 'normal csv-mode-map
+    "gh" 'csv-header-line
+    "ga" 'csv-align-fields
+    "gu" 'csv-unalign-fields
+    "gs" 'csv-sort-fields-region
+    "gS" 'csv-sort-numeric-fields-region))
 
-;; disable bell sound (https://www.emacswiki.org/emacs/AlarmBell)
-(setq visible-bell 1)
-
-;; enables recent file feature
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
-
-;; delimter highlighting
-(require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
-;; R markdown (https://plantarum.ca/2021/10/03/emacs-tutorial-rmarkdown/)
-(require 'poly-R)
-(add-to-list 'auto-mode-alist
-	     '("\\.[rR]md\\'" . poly-gfm+r-mode))
-(setq markdown-code-block-braces t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(csv-mode markdown-mode evil-collection evil)))
 
